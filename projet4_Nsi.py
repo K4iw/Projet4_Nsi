@@ -14,7 +14,13 @@ class Noeud:
 
 class Playlist:
     def __init__(self) -> None:
-        self.tete =None
+        self.tete = None
+    def ajouter_debut(self,morceau:object)->None:
+        """Ajoute un morceau au début de la playlist"""
+        assert isinstance(morceau,Morceau)
+        #Creer un nouveau maillon le met en première position et place les autres au niveau de la queue
+        self.tete = Noeud(morceau,self.tete)
+
 
 
 #teste des morceaux
