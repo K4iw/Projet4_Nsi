@@ -60,4 +60,3 @@ playlist.ajouter_debut(m5)
 playlist.ajouter_debut(m4)
 playlist.ajouter_debut(m3)
 print(playlist.afficher())
-#test
