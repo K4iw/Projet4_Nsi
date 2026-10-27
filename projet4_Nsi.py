@@ -17,7 +17,7 @@ class Playlist:
     def __init__(self) -> None:
         self.tete = None
 
-    def ajouter_debut(self,morceau)->None:
+    def ajouter_debut(self,morceau:Morceau)->None:
         """Ajoute un morceau au début de la playlist"""
         assert isinstance(morceau,Morceau)
 
@@ -41,7 +41,7 @@ class Playlist:
         #Renvoie le l'affichage de la playlist sous forme de chaine de caractère
         return affiche
 
-    def ajouter_fin(self,morceau):
+    def ajouter_fin(self,morceau:Morceau):
         """Ajoute un morceau à la fin de la playlist"""
         assert isinstance(morceau,Morceau)
         #Création d'une liste vide qui contientra les morceaux de la playlist
