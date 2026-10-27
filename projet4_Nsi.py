@@ -17,7 +17,7 @@ class Playlist:
     def __init__(self) -> None:
         self.tete = None
 
-    def ajouter_debut(self,morceau:object)->None:
+    def ajouter_debut(self,morceau)->None:
         """Ajoute un morceau au début de la playlist"""
         assert isinstance(morceau,Morceau)
 
@@ -41,6 +41,33 @@ class Playlist:
         #Renvoie le l'affichage de la playlist sous forme de chaine de caractère
         return affiche
 
+    def ajouter_fin(self,morceau):
+        """Ajoute un morceau à la fin de la playlist"""
+        assert isinstance(morceau,Morceau)
+        #Création d'une liste vide qui contientra les morceaux de la playlist
+        liste_morceaux = []
+        n = self.tete
+        while n != None :
+            #On ajoute un morceau à la playlist
+            liste_morceaux.append(n.morceau)
+            #On passe au morceau suivant
+            n = n.suivant
+        #On ajoute le morceau que l'on souhaite mettre  à la fin
+        # à la liste qui contient les morceaux
+        liste_morceaux.append(morceau)
+        #On remet la playlist à zéro
+        self.tete = None
+        #On parcourt la liste de morceau et on est les ajoute à la playlist
+        for i in range(len(liste_morceaux)):
+            #On ajoute les morceaux à la playlist en partant de la fin de la liste
+            #La logique peut etre plus simple si reversed() autorisé à demander au prof
+            self.ajouter_debut(liste_morceaux[len(liste_morceaux)-i-1])
+
+
+
+
+
+
 
 
 
@@ -56,7 +83,39 @@ m5 = Morceau("Smells Like Teen Spirit", "Nirvana", 301)
 n1=Noeud(m1,Noeud(m2,Noeud(m3)))
 #création d'une playlist
 playlist = Playlist()
-playlist.ajouter_debut(m5)
 playlist.ajouter_debut(m4)
 playlist.ajouter_debut(m3)
+playlist.ajouter_debut(m2)
+playlist.ajouter_debut(m1)
 print(playlist.afficher())
+playlist.ajouter_fin(m5)
+print(playlist.afficher())#Vérification
+
+
+
+
+#Façon plus simple de faire
+# def ajouter_fin(self, morceau):
+    #assert isinstance(morceau, Morceau)
+
+    # 1. On crée le nouveau wagon (le nœud) qui contient ton morceau.
+    # Comme c'est le dernier, sa flèche "suivant" pointe vers None (rien).
+    #nouveau = Noeud(morceau)
+
+    # 2. Cas particulier : si la playlist est totalement vide,
+    # le nouveau morceau devient simplement le premier (la tête).
+    #if self.tete is None:
+        #self.tete = nouveau
+        #return
+
+    # 3. Si la playlist n'est pas vide, on commence à la tête...
+    #n = self.tete
+
+    # 4. ...et on avance TANT QUE le wagon actuel a un wagon suivant.
+    # Dès que n.suivant vaut None, la boucle s'arrête. On est sur le DERNIER wagon.
+    #while n.suivant is not None:
+        #n = n.suivant
+
+    # 5. Maintenant qu'on est sur le dernier wagon, on remplace son "suivant"
+    # (qui était vide) par notre nouveau wagon.
+    #n.suivant = nouveau
