@@ -10,7 +10,7 @@ class Morceau:
 
 class Noeud:
     #Constructeur
-    def __init__(self,morceau:object , suivant=None):
+    def __init__(self,morceau:Morceau , suivant=None):
         self.morceau = morceau
         self.suivant = suivant
 
@@ -52,6 +52,7 @@ class Playlist:
         #Vérifie si la playlist n'est pas vide.
         if self.tete is None:
             self.tete = nouveau
+            #Permet de sortir de la méthode ajouter_fin
             return
 
         #La playlist n'est pas vide alors on commence à la tete
@@ -86,6 +87,32 @@ class Playlist:
         #Retourne le noeud , vide si le morceau avec le titre n'a pas été trouvé
         return noeud
 
+    def supprimer(self,titre:str)-> None:
+        """Supprime le premier morceau correspondant au titre dans la playlist"""
+        assert isinstance(titre,str)
+        n = self.rechercher(titre)
+        supprime = self.tete
+        #Prévois le cas ou le morceau est absent
+        if n is None:
+            print("Le morceau choisi n'existe pas ")
+            return
+        else:
+            if supprime != n:
+                # Termine la boucle quand le noeud suivant et le noeud à supprimer
+                while supprime.suivant != n:
+                    #Passage au noeud suivant
+                    supprime = supprime.suivant
+                #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
+                supprime.suivant =supprime.suivant.suivant
+            #Prise compte du cas ou le morceau est en première position
+            else:
+                #Le morceau de la tete sera le morceau de la queue qui suit
+                supprime.morceau = supprime.suivant.morceau
+                #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
+                supprime.suivant = supprime.suivant.suivant
+
+
+
 
 
 
@@ -119,6 +146,5 @@ print(playlist.afficher())
 n = playlist.rechercher("Imagine")
 if n is not None:
     print(n.morceau.artiste)
-m = playlist.rechercher("Je sais pas")
-if m is not None:
-    print(m.morceau.artiste)
+playlist.supprimer("Smells Like Teen Spirit")
+print(playlist.afficher())
