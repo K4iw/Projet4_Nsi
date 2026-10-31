@@ -172,6 +172,26 @@ class Playlist:
         # Retourne la duree_total de la playlist en seconde
         return duree_total
 
+    def afficher_duree_total(self):
+        """Affiche la duree totale dans la console"""
+
+        duree_total =self.duree_total()
+        affiche ="Durée totale : "
+
+        # Conversion en heures,miutes,secondes
+        heures = duree_total//3600
+        minutes = duree_total//60 - heures * 60
+        secondes = duree_total - minutes*60 - heures*3600
+        # Ajout de des heures , des minutes et des secondes à affiche
+        if heures>0:
+            affiche += str(heures) +" heures "
+        if minutes>0:
+            affiche += str(minutes) + " minutes "
+        if secondes>=0:
+            affiche += str(secondes) + " secondes"
+        print(affiche)
+
+
 
 
 
@@ -212,10 +232,11 @@ print(playlist.afficher())
 n = playlist.rechercher("Imagine")
 if n is not None:
     print(n.morceau.artiste)
-#Test de la méthode supprimer
+#Test des méthodes
 playlist.supprimer("Smells Like Teen Spirit")
 print(playlist.afficher())
 playlist.inserer(m6,0)
 print(playlist.afficher())
 print(playlist.compter())
 print(playlist.duree_total())
+playlist.afficher_duree_total()
