@@ -111,6 +111,37 @@ class Playlist:
                 #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
                 supprime.suivant = supprime.suivant.suivant
 
+    def inserer(self,morceau :Morceau,position:int):
+        """Insére un morceau à une position donné"""
+        assert isinstance(morceau,Morceau)
+        assert isinstance(position,int)
+        # Initialisation de variables
+        position = position
+        actuelle = 0
+        parcourt = self.tete
+        # Prise en compte de la position 0
+        if actuelle == position:
+            self.tete = Noeud(morceau ,self.tete)
+
+        else :
+            # Vérifie si la position suivante sera la position souhaité
+            while actuelle+1 != position :
+                # Ajout de 1 à la position actuelle
+                actuelle += 1
+                # Passage au Noeud suivant
+                parcourt = parcourt.suivant
+                # Vérifie si le parcourt n'arrive pas en dehors la playlist
+                if parcourt.suivant==None and actuelle+1 != position:
+                    # Indication à l'utilisateur que sa demande n'est pas possible
+                    print("Position choisi out of range ")
+                    return
+            # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
+            parcourt.suivant = Noeud(morceau,parcourt.suivant)
+
+
+
+
+
 
 
 
@@ -125,6 +156,7 @@ m2 = Morceau("Billie Jean", "Michael Jackson", 294)
 m3 = Morceau("Hey Jude", "The Beatles", 431)
 m4 = Morceau("One", "U2", 276)
 m5 = Morceau("Smells Like Teen Spirit", "Nirvana", 301)
+m6 = Morceau("Test","Kyrian",60)
 
 #Création d'une liste chainé à partir de la class:Noeud
 n1=Noeud(m1,Noeud(m2,Noeud(m3)))
@@ -146,5 +178,8 @@ print(playlist.afficher())
 n = playlist.rechercher("Imagine")
 if n is not None:
     print(n.morceau.artiste)
+#Test de la méthode supprimer
 playlist.supprimer("Smells Like Teen Spirit")
+print(playlist.afficher())
+playlist.inserer(m6,0)
 print(playlist.afficher())
