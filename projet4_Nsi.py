@@ -94,9 +94,10 @@ class Playlist:
         supprime = self.tete
         #Prévois le cas ou le morceau est absent
         if n is None:
-            print("Le morceau choisi n'existe pas ")
+            print("Le morceau choisi n'existe pas dans la playlist ")
             return
         else:
+            # Vérifie si le premier morceau de la playlist n'est pas celui que l'on cherche à supprimer
             if supprime != n:
                 # Termine la boucle quand le noeud suivant et le noeud à supprimer
                 while supprime.suivant != n:
@@ -106,10 +107,15 @@ class Playlist:
                 supprime.suivant =supprime.suivant.suivant
             #Prise compte du cas ou le morceau est en première position
             else:
-                #Le morceau de la tete sera le morceau de la queue qui suit
-                supprime.morceau = supprime.suivant.morceau
-                #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
-                supprime.suivant = supprime.suivant.suivant
+                # Prévision du cas ou la playlist ne contient qu'un seul morceau
+                if supprime.suivant != None:
+                    #Le morceau de la tete sera le morceau de la queue qui suit
+                    supprime.morceau = supprime.suivant.morceau
+                    #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
+                    supprime.suivant = supprime.suivant.suivant
+                else :
+                    self.tete = None
+
 
     def inserer(self,morceau :Morceau,position:int):
         """Insére un morceau à une position donné , on compte à partir de 0"""
@@ -151,6 +157,20 @@ class Playlist:
             parcourt = parcourt.suivant
         # Retourne le nombre de morceau présent dans la playlist
         return compte
+
+    def duree_total(self) ->int:
+        """ retourne la durée totale de la playlist en secondes"""
+        # Initialisaion de variable
+        duree_total = 0
+        parcourt = self.tete
+
+        while parcourt !=None:
+            # Ajout de la duree d'un morceau
+            duree_total += parcourt.morceau.duree
+            # Passage au morceau suivant
+            parcourt = parcourt.suivant
+        # Retourne la duree_total de la playlist en seconde
+        return duree_total
 
 
 
@@ -198,3 +218,4 @@ print(playlist.afficher())
 playlist.inserer(m6,0)
 print(playlist.afficher())
 print(playlist.compter())
+print(playlist.duree_total())
