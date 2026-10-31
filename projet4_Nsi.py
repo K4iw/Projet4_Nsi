@@ -112,7 +112,7 @@ class Playlist:
                 supprime.suivant = supprime.suivant.suivant
 
     def inserer(self,morceau :Morceau,position:int):
-        """Insére un morceau à une position donné"""
+        """Insére un morceau à une position donné , on compte à partir de 0"""
         assert isinstance(morceau,Morceau)
         assert isinstance(position,int)
         # Initialisation de variables
@@ -137,6 +137,20 @@ class Playlist:
                     return
             # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
             parcourt.suivant = Noeud(morceau,parcourt.suivant)
+
+    def compter(self) -> int:
+        """Compte le nombre de morceaux présent dans la playlist"""
+        # Initialisation de variable
+        compte =0
+        parcourt =self.tete
+        # Parcourt la playlist
+        while parcourt != None:
+            # Incrémentation de compte
+            compte += 1
+            # Passage au morceau suivant
+            parcourt = parcourt.suivant
+        # Retourne le nombre de morceau présent dans la playlist
+        return compte
 
 
 
@@ -183,3 +197,4 @@ playlist.supprimer("Smells Like Teen Spirit")
 print(playlist.afficher())
 playlist.inserer(m6,0)
 print(playlist.afficher())
+print(playlist.compter())
