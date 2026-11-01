@@ -63,7 +63,7 @@ class Playlist:
             #Passage au noeud suivant
             m = m.suivant
 
-        #On arrive au dernier noeud et on remplace le suivant qui None  par le morceau que l'on souhaite ajouter
+        #On arrive au dernier noeud et on remplace le suivant qui est None  par le morceau que l'on souhaite ajouter
         m.suivant = nouveau
 
     def rechercher(self,titre:str) -> Noeud | None :
@@ -107,14 +107,7 @@ class Playlist:
                 supprime.suivant =supprime.suivant.suivant
             #Prise compte du cas ou le morceau est en première position
             else:
-                # Prévision du cas ou la playlist ne contient qu'un seul morceau
-                if supprime.suivant != None:
-                    #Le morceau de la tete sera le morceau de la queue qui suit
-                    supprime.morceau = supprime.suivant.morceau
-                    #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
-                    supprime.suivant = supprime.suivant.suivant
-                else :
-                    self.tete = None
+                self.tete = self.tete.suivant
 
 
     def inserer(self,morceau :Morceau,position:int):
@@ -130,19 +123,24 @@ class Playlist:
             self.tete = Noeud(morceau ,self.tete)
 
         else :
-            # Vérifie si la position suivante sera la position souhaité
-            while actuelle+1 != position :
-                # Ajout de 1 à la position actuelle
-                actuelle += 1
-                # Passage au Noeud suivant
-                parcourt = parcourt.suivant
-                # Vérifie si le parcourt n'arrive pas en dehors la playlist
-                if parcourt.suivant==None and actuelle+1 != position:
-                    # Indication à l'utilisateur que sa demande n'est pas possible
-                    print("Position choisi out of range ")
-                    return
-            # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
-            parcourt.suivant = Noeud(morceau,parcourt.suivant)
+            #Prends en compte si la liste est vide
+            if self.tete !=None:
+                # Vérifie si la position suivante sera la position souhaité
+                while actuelle+1 != position :
+                    # Ajout de 1 à la position actuelle
+                    actuelle += 1
+                    # Vérifie si le parcourt n'arrive pas en dehors la playlist
+                    if parcourt.suivant==None and actuelle+1 != position:
+                        # Indication à l'utilisateur que sa demande n'est pas possible
+                        print("Position choisi out of range ")
+                        return
+                    # Passage au Noeud suivant
+                    parcourt = parcourt.suivant
+                # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
+                parcourt.suivant = Noeud(morceau,parcourt.suivant)
+            else :
+                print("Position choisi out of range et Playlist vide")
+
 
     def compter(self) -> int:
         """Compte le nombre de morceaux présent dans la playlist"""
@@ -182,7 +180,7 @@ class Playlist:
         heures = duree_total//3600
         minutes = duree_total//60 - heures * 60
         secondes = duree_total - minutes*60 - heures*3600
-        # Ajout de des heures , des minutes et des secondes à affiche
+        # Ajout  des heures , des minutes et des secondes à affiche
         if heures>0:
             affiche += str(heures) +" heures "
         if minutes>0:
@@ -217,6 +215,7 @@ n1=Noeud(m1,Noeud(m2,Noeud(m3)))
 
 #Création d'une playlist
 playlist = Playlist()
+playlist2 =Playlist()
 #Ajout des morceaux à la playlist
 playlist.ajouter_debut(m4)
 playlist.ajouter_debut(m3)
