@@ -117,7 +117,6 @@ class Playlist:
         assert isinstance(position,int)
 
         # Initialisation de variables
-        position = position
         actuelle = 0
         parcourt = self.tete
         # Prise en compte de la position 0
