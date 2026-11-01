@@ -48,13 +48,12 @@ class Playlist:
 
         #Création du noeud du morceau qui sera à la fin
         nouveau = Noeud(morceau)
-        #La playlist n'est pas vide alors on commence à la tete
-        m = self.tete
 
         #Vérifie si la playlist n'est pas vide.
         if self.tete is None:
             self.tete = nouveau
         else:
+            m = self.tete
             #On avance dans la playlist jusqu'a temps qu'il n'y est plus de morceau après
             while m.suivant is not None:
                 #Passage au noeud suivant
@@ -116,32 +115,35 @@ class Playlist:
         """Insére un morceau à une position donné , on compte à partir de 0"""
         assert isinstance(morceau,Morceau)
         assert isinstance(position,int)
+
         # Initialisation de variables
         position = position
         actuelle = 0
         parcourt = self.tete
         # Prise en compte de la position 0
-        if actuelle == position:
+        if position == 0:
             self.tete = Noeud(morceau ,self.tete)
 
         else :
             #Prends en compte si la liste est vide
-            if self.tete !=None:
+            if self.tete == None:
+                print("Position choisi out of range et la playlist vide")
+
+            else :
                 # Vérifie si la position suivante sera la position souhaité
-                while actuelle+1 != position :
+                while actuelle != position -1 :
                     # Ajout de 1 à la position actuelle
                     actuelle += 1
                     # Vérifie si le parcourt n'arrive pas en dehors la playlist
-                    if parcourt.suivant==None and actuelle+1 != position:
+                    if parcourt.suivant==None and actuelle != position -1:
                         # Indication à l'utilisateur que sa demande n'est pas possible
                         print("Position choisi out of range ")
+                        # Arrete la méthode
                         return
                     # Passage au Noeud suivant
                     parcourt = parcourt.suivant
                 # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
                 parcourt.suivant = Noeud(morceau,parcourt.suivant)
-            else :
-                print("Position choisi out of range et Playlist vide")
 
 
     def compter(self) -> int:
