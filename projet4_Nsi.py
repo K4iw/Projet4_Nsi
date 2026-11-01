@@ -70,15 +70,13 @@ class Playlist:
         n = self.tete
         #noeud est le Noeud qui sera renvoyé à la fin du script
         noeud = None
-        #trouve permet d'arreté la boucle si le morceau à été trouvé
-        trouve = False
 
-        while n  is not  None and  trouve is not(True) :
+        while n  is not  None :
             if n.morceau.titre == titre :
-                #Permet d'arreter la boucle
-                trouve = True
                 #Assigne à la variable(noeud) le noeud ou le morceau se trouve
                 noeud = n
+                #Retourne le noeud
+                return noeud
             #Passage au noeud suivant
             n = n.suivant
         #Retourne le noeud , vide si le morceau avec le titre n'a pas été trouvé
