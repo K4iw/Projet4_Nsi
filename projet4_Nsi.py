@@ -48,23 +48,20 @@ class Playlist:
 
         #Création du noeud du morceau qui sera à la fin
         nouveau = Noeud(morceau)
+        #La playlist n'est pas vide alors on commence à la tete
+        m = self.tete
 
         #Vérifie si la playlist n'est pas vide.
         if self.tete is None:
             self.tete = nouveau
-            #Permet de sortir de la méthode ajouter_fin
-            return
+        else:
+            #On avance dans la playlist jusqu'a temps qu'il n'y est plus de morceau après
+            while m.suivant is not None:
+                #Passage au noeud suivant
+                m = m.suivant
 
-        #La playlist n'est pas vide alors on commence à la tete
-        m = self.tete
-
-        #On avance dans la playlist jusqu'a temps qu'il n'y est plus de morceau après
-        while m.suivant is not None:
-            #Passage au noeud suivant
-            m = m.suivant
-
-        #On arrive au dernier noeud et on remplace le suivant qui est None  par le morceau que l'on souhaite ajouter
-        m.suivant = nouveau
+            #On arrive au dernier noeud et on remplace le suivant qui est None  par le morceau que l'on souhaite ajouter
+            m.suivant = nouveau
 
     def rechercher(self,titre:str) -> Noeud | None :
         """Cherche un morceau à partir de son titre"""
@@ -215,7 +212,6 @@ n1=Noeud(m1,Noeud(m2,Noeud(m3)))
 
 #Création d'une playlist
 playlist = Playlist()
-playlist2 =Playlist()
 #Ajout des morceaux à la playlist
 playlist.ajouter_debut(m4)
 playlist.ajouter_debut(m3)
