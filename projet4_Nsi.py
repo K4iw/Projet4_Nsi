@@ -66,6 +66,7 @@ class Playlist:
     def rechercher(self,titre:str) -> Noeud | None :
         """Cherche un morceau à partir de son titre"""
         assert isinstance(titre,str)
+
         #n est initialisé pour permettre le parcourt de la playlist
         n = self.tete
         #noeud est le Noeud qui sera renvoyé à la fin du script
@@ -79,30 +80,36 @@ class Playlist:
                 return noeud
             #Passage au noeud suivant
             n = n.suivant
+
         #Retourne le noeud , vide si le morceau avec le titre n'a pas été trouvé
         return noeud
 
     def supprimer(self,titre:str)-> None:
         """Supprime le premier morceau correspondant au titre dans la playlist"""
         assert isinstance(titre,str)
+
+        # Recherche le Noeud ou le morceau se trouve
         n = self.rechercher(titre)
+        # Permet le parcourt de la playlist
         supprime = self.tete
+
         #Prévois le cas ou le morceau est absent
         if n is None:
             print("Le morceau choisi n'existe pas dans la playlist ")
-            return
+
         else:
-            # Vérifie si le premier morceau de la playlist n'est pas celui que l'on cherche à supprimer
-            if supprime != n:
+            # Vérifie si le premier morceau de la playlist est  celui que l'on cherche à supprimer
+            if supprime == n:
+                self.tete = self.tete.suivant
+
+            else:
                 # Termine la boucle quand le noeud suivant et le noeud à supprimer
                 while supprime.suivant != n:
                     #Passage au noeud suivant
                     supprime = supprime.suivant
                 #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
                 supprime.suivant =supprime.suivant.suivant
-            #Prise compte du cas ou le morceau est en première position
-            else:
-                self.tete = self.tete.suivant
+
 
 
     def inserer(self,morceau :Morceau,position:int):
