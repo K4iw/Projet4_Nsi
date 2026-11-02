@@ -2,32 +2,30 @@
 
 
 class Morceau:
-    #Constructeur
     def __init__(self,t:str, a:str, d:int):
         self.titre = t
         self.artiste = a
         self.duree = d
 
 class Noeud:
-    #Constructeur
     def __init__(self,morceau:Morceau , suivant=None):
         self.morceau = morceau
         self.suivant = suivant
 
 class Playlist:
-    #Constructeur
     def __init__(self) :
         self.tete = None
 
-    def ajouter_debut(self,morceau:Morceau)-> None:
+    def ajouter_debut(self,morceau:Morceau) :
         """Ajoute un morceau au début de la playlist"""
         assert isinstance(morceau,Morceau)
 
         #Creer un nouveau maillon le met en première position et place les autres au niveau de la queue
         self.tete = Noeud(morceau,self.tete)
 
-    def afficher(self)->str:
+    def afficher(self):
         """Affiche les morceaux qui sont dans la playlist"""
+        #Initialisation des variables
         affichage = ""#Création d'une varible permettan l'affichage
         m = self.tete#Permet le parcourt de la playlist
         i = 1#Défini le numéro de la musique dans la playlist
@@ -40,9 +38,9 @@ class Playlist:
             m = m.suivant#Passage au morceau suivant
 
         #Renvoie l'affichage de la playlist sous forme de chaine de caractère
-        return affichage
+        print(affichage)
 
-    def ajouter_fin(self,morceau:Morceau)-> None:
+    def ajouter_fin(self,morceau:Morceau) :
         """Ajoute un morceau à la fin de la playlist"""
         assert isinstance(morceau, Morceau)
 
@@ -62,7 +60,7 @@ class Playlist:
             #On arrive au dernier noeud et on remplace le suivant qui est None  par le morceau que l'on souhaite ajouter
             m.suivant = nouveau
 
-    def rechercher(self,titre:str) -> Noeud | None :
+    def rechercher(self,titre:str) -> Noeud  :
         """Cherche un morceau à partir de son titre"""
         assert isinstance(titre,str)
 
@@ -83,31 +81,31 @@ class Playlist:
         #Retourne le noeud , vide si le morceau avec le titre n'a pas été trouvé
         return noeud
 
-    def supprimer(self,titre:str)-> None:
+    def supprimer(self,titre:str):
         """Supprime le premier morceau correspondant au titre dans la playlist"""
         assert isinstance(titre,str)
 
         # Recherche le Noeud ou le morceau se trouve
         n = self.rechercher(titre)
-        # Permet le parcourt de la playlist
-        supprime = self.tete
+
 
         #Prévois le cas ou le morceau est absent
         if n is None:
             print("Le morceau choisi n'existe pas dans la playlist ")
 
-        else:
-            # Vérifie si le premier morceau de la playlist est  celui que l'on cherche à supprimer
-            if supprime == n:
-                self.tete = self.tete.suivant
+        # Vérifie si le premier morceau de la playlist est  celui que l'on cherche à supprimer
+        elif self.tete == n:
+            self.tete = self.tete.suivant
 
-            else:
-                # Termine la boucle quand le noeud suivant et le noeud à supprimer
-                while supprime.suivant != n:
-                    #Passage au noeud suivant
-                    supprime = supprime.suivant
-                #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
-                supprime.suivant =supprime.suivant.suivant
+
+        else:
+            supprime = self.tete
+            # Termine la boucle quand le noeud suivant et le noeud à supprimer
+            while supprime.suivant != n:
+                #Passage au noeud suivant
+                supprime = supprime.suivant
+            #Change le noeud suivant , en prenant celui qui vient  après le noeud suivant (on passe le noeud que l'on veut supprimer)
+            supprime.suivant =supprime.suivant.suivant
 
 
 
@@ -116,52 +114,56 @@ class Playlist:
         assert isinstance(morceau,Morceau)
         assert isinstance(position,int)
 
-        # Initialisation de variables
-        actuelle = 0
-        parcourt = self.tete
         # Prise en compte de la position 0
         if position == 0:
             self.tete = Noeud(morceau ,self.tete)
+        #Prise en compte de la playlist vide
+        elif self.tete is None:
+            print("Position choisi out of range car playlist vide,unique position valide 0")
 
-        else :
-            #Prends en compte si la liste est vide
-            if self.tete == None:
-                print("Position choisi out of range et la playlist vide")
+        else:
+            #Initialisation des variables
+            actuelle = 0
+            parcourt = self.tete
+            #Permet d'arreter la boucle
+            insertion_possible = True
 
-            else :
-                # Vérifie si la position suivante sera la position souhaité
-                while actuelle != position -1 :
-                    # Ajout de 1 à la position actuelle
-                    actuelle += 1
-                    # Vérifie si le parcourt n'arrive pas en dehors la playlist
-                    if parcourt.suivant==None and actuelle != position -1:
-                        # Indication à l'utilisateur que sa demande n'est pas possible
-                        print("Position choisi out of range ")
-                        # Arrete la méthode
-                        return
-                    # Passage au Noeud suivant
+            #Parcourt de la playlist
+            while actuelle < position - 1 and insertion_possible:
+                #Incrémentation de la position actuelle
+                actuelle += 1
+                #Vérification de si la position choisi n'est pas out of range
+                if actuelle < position -1 and parcourt.suivant is None:
+                    print("position choisi out of range")
+                    insertion_possible = False
+                else:
+                    #Passage au morceau suivant
                     parcourt = parcourt.suivant
-                # Insérer le morceau désiré à la position souhaité en créant un nouveau noeud
+            #Permet de vérifier si l'insertion est possible
+            if insertion_possible:
+                #On change le maillon  suivant par le morceau que l'on veut inserer
                 parcourt.suivant = Noeud(morceau,parcourt.suivant)
 
 
     def compter(self) -> int:
         """Compte le nombre de morceaux présent dans la playlist"""
-        # Initialisation de variable
+        # Initialisation des variables
         compte =0
         parcourt =self.tete
+
         # Parcourt la playlist
         while parcourt != None:
             # Incrémentation de compte
             compte += 1
             # Passage au morceau suivant
             parcourt = parcourt.suivant
+
         # Retourne le nombre de morceau présent dans la playlist
         return compte
 
     def duree_total(self) ->int:
         """ retourne la durée totale de la playlist en secondes"""
-        # Initialisaion de variable
+        # Initialisaion des variables
         duree_total = 0
         parcourt = self.tete
 
@@ -170,6 +172,7 @@ class Playlist:
             duree_total += parcourt.morceau.duree
             # Passage au morceau suivant
             parcourt = parcourt.suivant
+
         # Retourne la duree_total de la playlist en seconde
         return duree_total
 
@@ -224,20 +227,20 @@ playlist.ajouter_debut(m3)
 playlist.ajouter_debut(m2)
 playlist.ajouter_debut(m1)
 #Affichage des morceaux present dans la playlist
-print(playlist.afficher())
+playlist.afficher()
 
 playlist.ajouter_fin(m5)
 #Vérification du fonctionnement de la méthode ajouter_fin
-print(playlist.afficher())
+playlist.afficher()
 #Vérification du bon fonctionnement de la méthode rechercher
 n = playlist.rechercher("Imagine")
 if n is not None:
     print(n.morceau.artiste)
 #Test des méthodes
 playlist.supprimer("Smells Like Teen Spirit")
-print(playlist.afficher())
+playlist.afficher()
 playlist.inserer(m6,0)
-print(playlist.afficher())
+playlist.afficher()
 print(playlist.compter())
 print(playlist.duree_total())
 playlist.afficher_duree_total()
