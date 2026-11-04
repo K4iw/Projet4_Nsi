@@ -60,26 +60,20 @@ class Playlist:
             #On arrive au dernier noeud et on remplace le suivant qui est None  par le morceau que l'on souhaite ajouter
             m.suivant = nouveau
 
-    def rechercher(self,titre:str) -> Noeud  :
+    def rechercher(self,titre:str) :
         """Cherche un morceau à partir de son titre"""
         assert isinstance(titre,str)
 
         #n est initialisé pour permettre le parcourt de la playlist
         n = self.tete
-        #noeud est le Noeud qui sera renvoyé à la fin du script
-        noeud = None
 
         while n  is not  None :
             if n.morceau.titre == titre :
-                #Assigne à la variable(noeud) le noeud ou le morceau se trouve
-                noeud = n
-                #Retourne le noeud
-                return noeud
+                return n
             #Passage au noeud suivant
             n = n.suivant
 
-        #Retourne le noeud , vide si le morceau avec le titre n'a pas été trouvé
-        return noeud
+        return None
 
     def supprimer(self,titre:str):
         """Supprime le premier morceau correspondant au titre dans la playlist"""
